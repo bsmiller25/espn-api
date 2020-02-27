@@ -13,6 +13,7 @@ POSITION_MAP = {
     11: 'UT',
     12: 'BE',
     13: 'IR',
+    15: '??',
 }
 
 PRO_TEAM_MAP = {
