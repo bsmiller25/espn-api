@@ -8,6 +8,7 @@ class Matchup(object):
         self.home_team_live_score = None
         self.away_team_live_score = None
         self._fetch_matchup_info(data)
+
         
     def __repr__(self):
         # TODO: use final score when that's available?
@@ -30,6 +31,7 @@ class Matchup(object):
         self.winner = data['winner']
         self.home_team_cats = None
         self.away_team_cats = None
+
         
         # if stats are available
         if 'cumulativeScore' in data['home'].keys():
