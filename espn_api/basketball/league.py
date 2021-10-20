@@ -43,6 +43,7 @@ class League(object):
         self.username = username
         self.password = password
         self.save_cookies = save_cookies
+
         if self.espn_s2 and self.swid:
             self.cookies = {
                 'espn_s2': self.espn_s2,
@@ -168,12 +169,14 @@ class League(object):
 
     def authentication(self, save=False):
 
-        url_api_key = 'https://registerdisney.go.com/jgc/v5/client/ESPN-FANTASYLM-PROD/api-key?langPref=en-US'
-        url_login = 'https://ha.registerdisney.go.com/jgc/v5/client/ESPN-FANTASYLM-PROD/guest/login?langPref=en-US'
+        url_api_key = 'https://registerdisney.go.com/jgc/v6/client/ESPN-ONESITE.WEB-PROD/api-key?langPref=en-US'
+        url_login = 'https://ha.registerdisney.go.com/jgc/v6/client/ESPN-ONESITE.WEB-PROD/guest/login?langPref=en-US'
 
+        
         # Make request to get the API-Key
         headers = {'Content-Type': 'application/json',
-                   'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36',}
+                   'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36',
+                   }
 
         response = requests.post(url_api_key, headers=headers)
         if response.status_code != 200 or 'api-key' not in response.headers:
@@ -186,9 +189,11 @@ class League(object):
         headers['authorization'] = 'APIKEY ' + api_key
         payload = {'loginValue': self.username, 'password': self.password}
         response = requests.post(url_login, headers=headers, json=payload)
+
         if response.status_code != 200:
             print('Authentication unsuccessful - check username and password input')
             print('Retry the authentication or continuing without private league access')
+
             return
         data = response.json()
         if data['error'] is not None:
