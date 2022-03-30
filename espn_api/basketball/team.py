@@ -28,7 +28,7 @@ class Team(object):
         
         self._fetch_roster(roster)
         self._fetch_schedule(schedule)
-        
+
     def __repr__(self):
         return 'Team(%s)' % (self.team_name, )
     
