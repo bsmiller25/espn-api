@@ -6,9 +6,10 @@ from .constant import STATS_MAP
 class Team(object):
     '''Teams are part of the league'''
     def __init__(self, data, member, roster, schedule):
+
         self.team_id = data['id']
         self.team_abbrev = data['abbrev']
-        self.team_name = "%s %s" % (data['location'], data['nickname'])
+        self.team_name = data['name']
         self.division_id = data['divisionId']
         self.wins = data['record']['overall']['wins']
         self.losses = data['record']['overall']['losses']

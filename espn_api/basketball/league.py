@@ -73,7 +73,8 @@ class League(object):
         self.currentMatchupPeriod = data['status']['currentMatchupPeriod']
         self.scoringPeriodId = data['scoringPeriodId']
         self.firstScoringPeriod = data['status']['firstScoringPeriod']
-        self.start_date = datetime.datetime.fromtimestamp(min([i[1][1]/1000 for i in self._get_nba_schedule(1).items()])).date()
+        # start date may need to change
+        self.start_date = datetime.datetime.fromtimestamp(min([i[1][1]/1000 for i in self._get_nba_schedule(2).items()])).date()
         
         return(data)
 
