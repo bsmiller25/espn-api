@@ -35,7 +35,7 @@ class League(object):
         if year < 2018:
             self.ENDPOINT = "https://fantasy.espn.com/apis/v3/games/fba/leagueHistory/" + str(league_id) + "?seasonId=" + str(year)
         else:
-            self.ENDPOINT = "https://fantasy.espn.com/apis/v3/games/fba/seasons/" + str(year) + "/segments/0/leagues/" + str(league_id)
+            self.ENDPOINT = "https://lm-api-reads.fantasy.espn.com/apis/v3/games/fba/seasons/" + str(year) + "/segments/0/leagues/" + str(league_id)
         self.teams = []
         self.espn_s2 = espn_s2
         self.swid = swid
@@ -51,7 +51,7 @@ class League(object):
             }
         elif self.username and self.password:
             self.authentication(save=self.save_cookies)
-            
+
         data = self._fetch_league()
         self._fetch_teams(data)
 
@@ -63,12 +63,16 @@ class League(object):
         params = {
             'view': ['mTeam', 'mRoster', 'mMatchup',]
         }
-        r = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
-        self.status = r.status_code
-        self.logger.debug(f'ESPN API Request: {self.ENDPOINT} \nESPN API Response: {r.json()}\n')
-        checkRequestStatus(self.status)
+        req = requests.get(self.ENDPOINT, params=params, cookies=self.cookies)
+        self.status = req.status_code
 
-        data = r.json() if self.year > 2017 else r.json()[0]
+        
+        #self.logger.debug(f'ESPN API Request: {self.ENDPOINT} \nESPN API Response: {req.json()}\n')
+        #checkRequestStatus(self.status)
+
+        
+
+        data = req.json() if self.year > 2017 else req.json()[0]
 
         self.currentMatchupPeriod = data['status']['currentMatchupPeriod']
         self.scoringPeriodId = data['scoringPeriodId']
@@ -150,13 +154,13 @@ class League(object):
         if not scoringPeriodId:
             scoringPeriodId=self.scoringPeriodId
             
-        endpoint = 'https://fantasy.espn.com/apis/v3/games/fba/seasons/' + str(self.year) + '?view=proTeamSchedules_wl'
-        r = requests.get(endpoint, cookies=self.cookies)
-        self.status = r.status_code
-        self.logger.debug(f'ESPN API Request: url: {endpoint} \nESPN API Response: {r.json()}\n')
+        endpoint = 'https://lm-api-reads.fantasy.espn.com/apis/v3/games/fba/seasons/' + str(self.year) + '?view=proTeamSchedules_wl'
+        req = requests.get(endpoint, cookies=self.cookies)
+        self.status = req.status_code
+        self.logger.debug(f'ESPN API Request: url: {endpoint} \nESPN API Response: {req.json()}\n')
         checkRequestStatus(self.status)
         
-        pro_teams = r.json()['settings']['proTeams']
+        pro_teams = req.json()['settings']['proTeams']
         pro_team_schedule = {}
 
         for team in pro_teams:

@@ -10,6 +10,7 @@ class Team(object):
         self.team_id = data['id']
         self.team_abbrev = data['abbrev']
         self.team_name = data['name']
+        #self.team_name = "%s %s" % (data['location'], data['nickname'])
         self.division_id = data['divisionId']
         self.wins = data['record']['overall']['wins']
         self.losses = data['record']['overall']['losses']
